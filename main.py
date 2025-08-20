@@ -1,35 +1,127 @@
 import random
-import time
-import configs
 import configs as c
+
+
+class Dice:
+    six_sided_dice = {
+        1: """
+        . . .
+        . • .
+        . . .
+        """,
+        2: """
+        • . .
+        . . .
+        . . •
+        """,
+        3: """
+        • . .
+        . • .
+        . . •
+        """,
+        4: """
+        • . •
+        . . .
+        • . •
+        """,
+        5: """
+        • . •
+        . • .
+        • . •
+        """,
+        6: """
+        • . •
+        • . •
+        • . •
+        """
+    }
+
+    twelve_sided_dice = {
+        1: """
+        . . .
+        . • .
+        . . .
+        """,
+        2: """
+        • . .
+        . . .
+        . . •
+        """,
+        3: """
+        • . .
+        . • .
+        . . •
+        """,
+        4: """
+        • . •
+        . . .
+        • . •
+        """,
+        5: """
+        • . •
+        . • .
+        • . •
+        """,
+        6: """
+        • . •
+        • . •
+        • . •
+        """,
+        7: """
+        • • •
+        . • .
+        • • •
+        """,
+        8: """
+        • • •
+        • . •
+        • • •
+        """,
+        9: """
+        • • •
+        • • •
+        • . •
+        """,
+        10: """
+        • • •
+        • • •
+        • • •
+        """,
+        11: """
+        • • •
+        • • •
+        • • •
+        """,
+        12: """
+        • • •
+        • • •
+        • • •
+        """
+    }
 
 
 print(c.GREETING_MESSAGE)
 
-dice = input('How many sides do you want to equip you dice with')
+while True:
+    dice = input('Which dice do you want to roll? [6/12] ')
+    if dice == '6':
+        dice_faces = Dice.six_sided_dice
+        sides = 6
+    elif dice == '12':
+        dice_faces = Dice.twelve_sided_dice
+        sides = 12
+    else:
+        print('Invalid input')
+        continue  # Skip to the next iteration if input is invalid
 
-if dice.isalpha():
-    print('Invalid')
+    # Roll the dice (random number between 1 and the number of sides)
+    roll = random.randint(1, sides)
 
-else:
-    pass
+    # Display the rolled number and the corresponding dice face
+    print(f'You rolled a {roll}!')
+    content = roll
 
-def roll_dice(min_val_str, max_val_str):
+    with open(c.ROLLS_SAVE_FILE, "w") as file:
+        file.write(f"{content}\n")
 
-    min_val = int(min_val_str)
-    max_val = int(max_val_str)
-
-    return random.randint(min_val, max_val)
-
-#roll
-
-number_rolled = roll_dice(1, dice)
-
-print(f'You got {number_rolled}!')
-
-try:
-    with open(c.ROLLS_SAVE_FILE, 'a') as f:
-        f.write(f"Rolled: {number_rolled} on {time.ctime()}")
-    print(f"Roll saved to {c.ROLLS_SAVE_FILE}")
-except IOError as e:
-    print(f"Error saving roll to file: {e}")
+    print(dice_faces[roll])
